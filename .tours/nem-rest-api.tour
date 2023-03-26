@@ -1,0 +1,50 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "NEM REST API",
+  "steps": [
+    {
+      "file": "server.js",
+      "description": "Requiring http module",
+      "line": 1
+    },
+    {
+      "file": "server.js",
+      "description": "Creating http Server"
+    },
+    {
+      "file": "server.js",
+      "description": "Listening to Server's specific port. In this case 3000 port of localhost (i.e localhost:3000)",
+      "line": 7
+    },
+    {
+      "file": "app.js",
+      "description": "Requiring express",
+      "line": 1
+    },
+    {
+      "file": "app.js",
+      "description": "Creating express app",
+      "line": 4
+    },
+    {
+      "file": "app.js",
+      "description": "using middleware in express (.use())",
+      "line": 7
+    },
+    {
+      "file": "app.js",
+      "description": "Exporting app",
+      "line": 15
+    },
+    {
+      "file": "server.js",
+      "description": "Importing app from app.js",
+      "line": 5
+    },
+    {
+      "file": "server.js",
+      "description": "hosting express app on server created",
+      "line": 8
+    }
+  ]
+}
