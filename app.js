@@ -4,6 +4,9 @@ const express = require("express");
 // Creating express app
 const app = express();
 
+// Requiring body-parser
+const bodyParser = require("body-parser");
+
 // Requiring dotenv
 const dotenv = require("dotenv");
 dotenv.config();
@@ -31,6 +34,10 @@ mongoose.connection.on("error",(err)=>{
 mongoose.connection.on("connected", (conn)=>{
     console.log("Connected successfully!");
 })
+
+//using bodyParser
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 //Importing Routes
 const contactRoute = require("./api/routes/contact");

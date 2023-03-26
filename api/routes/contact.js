@@ -12,10 +12,19 @@ router.get('/',(req, res, next)=>{
 });
 
 // handeling POST request for contact/
+// router.post('/',(req, res, next)=>{
+//     res.status(200).json({
+//         "success": true,
+//         "message": "POST request on contact route"
+//     });
+// });
 router.post('/',(req, res, next)=>{
+    console.log(req.body);
+    console.log(req.body.name);
+
     res.status(200).json({
-        "success": true,
-        "message": "POST request on contact route"
+    "success": true,
+    "message": "App is running."
     });
 });
 
