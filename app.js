@@ -4,6 +4,10 @@ const express = require("express");
 // Creating express app
 const app = express();
 
+// Requiring dotenv
+const dotenv = require("dotenv");
+dotenv.config();
+
 // Requiring Mongoose
 const mongoose = require("mongoose");
 
@@ -11,7 +15,8 @@ const mongoose = require("mongoose");
 // mongoose.connect(mongodb+srv://random:<password>@random.rshnxb7.mongodb.net/?retryWrites=true&w=majority)
 
 //connecting mongodb atlas with our api
-const mongodbConnectionString = "mongodb+srv://random:random123@random.rshnxb7.mongodb.net/?retryWrites=true&w=majority";
+const mongodbClusterPassword = process.env.MONGODB_ATLAS_CLUSTER_PASSWORD;
+const mongodbConnectionString = `mongodb+srv://random:${mongodbClusterPassword}@random.rshnxb7.mongodb.net/?retryWrites=true&w=majority`;
 mongoose.connect(mongodbConnectionString);
 
 //ensure successful connection
