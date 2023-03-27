@@ -7,6 +7,10 @@ const app = express();
 // Requiring body-parser
 const bodyParser = require("body-parser");
 
+// Requiring express-fileupload
+const fileUpload = require("express-fileupload");
+
+
 // Requiring dotenv
 const dotenv = require("dotenv");
 dotenv.config();
@@ -36,8 +40,15 @@ mongoose.connection.on("connected", (conn)=>{
 })
 
 //using bodyParser
-app.use(bodyParser.urlencoded({extended: true}));
+// app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+
+//using fileupload
+app.use(fileUpload({
+    useTempFiles : true,
+    // tempFileDir : '/tmp/'
+}));
 
 //Importing Routes
 const contactRoute = require("./api/routes/contact");
