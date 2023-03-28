@@ -66,6 +66,29 @@ router.get("/:id", (req, res, next)=>{
 })
 
 
+
+// Delete request
+router.delete("/:id", (req, res, next)=>{
+    // console.log(req.params.id);
+    const {id} = req.params;
+    Contact.deleteOne({_id: id})
+    .then(result=>{
+        res.status(200).json({
+            success: true,
+            message: "Data deleted successfully",
+            result: result
+        });
+    })
+    .catch(err=>{
+        res.status(500).json({
+            success: false,
+            message: "Error occured!",
+            error: err
+        })
+    });
+})
+
+
 router.post('/test',(req, res, next)=>{
     const file = req.files.image;
     const uploadToCloudinary = (file)=>{
