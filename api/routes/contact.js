@@ -45,6 +45,26 @@ router.get('/',(req, res, next)=>{
 //     });
 // });
 
+router.get("/:id", (req, res, next)=>{
+    // console.log(req.params.id);
+    const {id} = req.params;
+    Contact.findById(id)
+    .then(result=>{
+        res.status(200).json({
+            status: true,
+            message: "Data fetched successfully",
+            data: result
+        });
+    })
+    .catch(err=>{
+        res.status(500).json({
+            success: false,
+            message: "Error occured!",
+            error: err
+        })
+    })
+})
+
 
 router.post('/test',(req, res, next)=>{
     const file = req.files.image;
