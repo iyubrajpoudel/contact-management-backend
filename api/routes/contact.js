@@ -89,6 +89,50 @@ router.delete("/:id", (req, res, next)=>{
 })
 
 
+// put request
+router.put("/:id", (req, res, next)=>{
+    // console.log(req.params.id);
+    const {id} = req.params;
+    const {name, email, phone} = req.body;
+    const image = req.files.image;
+    cloudinary.uploader.upload(image.tempFilePath, (err,result)=>{
+        if(err){
+            console.log("Error: " , err);
+            res.status(500).json({
+                success: false,
+                message: "Cloudinary error!",
+                error: err
+            })
+            return;
+        }
+        if(result){
+            let imageURL = result.url;
+            Contact.findOneAndUpdate({_id: id},{$set:{
+                name: name,
+                email: email,
+                phone: phone,
+                image: imageURL
+            }})
+            .then(result=>{
+                res.status(200).json({
+                    success: true,
+                    message: "Data updated successfully",
+                    result: result
+                });
+            })
+            .catch(err=>{
+                console.log(err);
+                res.status(500).json({
+                    success: false,
+                    message: "Error occured!",
+                    error: err
+                });
+            })
+        }
+    })
+})
+
+
 router.post('/test',(req, res, next)=>{
     const file = req.files.image;
     const uploadToCloudinary = (file)=>{
