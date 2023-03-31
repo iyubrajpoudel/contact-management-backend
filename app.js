@@ -52,9 +52,11 @@ app.use(fileUpload({
 
 //Importing Routes
 const contactRoute = require("./api/routes/contact");
+const userRoute = require("./api/routes/user");
 
 // Using routes in app
 app.use("/contact", contactRoute);
+app.use("/user", userRoute);
 
 // using middleware in express
 // app.use()
