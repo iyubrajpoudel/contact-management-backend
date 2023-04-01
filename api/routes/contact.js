@@ -3,6 +3,8 @@ const router = express.Router();
 const Contact = require("../models/contact");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
+const authenticate = require("../middlewares/authenticate");
+const adminAuthenticate = require("../middlewares/admin_authenticate");
 
 // Requiring dotenv
 const dotenv = require("dotenv");
@@ -18,7 +20,7 @@ cloudinary.config({
 // setting the different requests for differnt routes
 
 // handeling GET request for contact/
-router.get('/',(req, res, next)=>{
+router.get('/', authenticate, (req, res, next)=>{
     Contact.find()
     .then(result=>{
         res.status(200).json({
@@ -45,7 +47,7 @@ router.get('/',(req, res, next)=>{
 //     });
 // });
 
-router.get("/:id", (req, res, next)=>{
+router.get("/:id", authenticate, (req, res, next)=>{
     // console.log(req.params.id);
     const {id} = req.params;
     Contact.findById(id)
@@ -68,7 +70,7 @@ router.get("/:id", (req, res, next)=>{
 
 
 // Delete request
-router.delete("/:id", (req, res, next)=>{
+router.delete("/:id", adminAuthenticate, (req, res, next)=>{
     // console.log(req.params.id);
     const {id} = req.params;
     Contact.deleteOne({_id: id})
@@ -90,7 +92,7 @@ router.delete("/:id", (req, res, next)=>{
 
 
 // put request
-router.put("/:id", (req, res, next)=>{
+router.put("/:id", adminAuthenticate, (req, res, next)=>{
     // console.log(req.params.id);
     const {id} = req.params;
     const {name, email, phone} = req.body;
@@ -160,7 +162,7 @@ router.post('/test',(req, res, next)=>{
 });
 
 
-router.post('/', (req, res, next)=>{
+router.post('/', adminAuthenticate, (req, res, next)=>{
     // console.log(req.body);
     // console.log(req.body.name);
 

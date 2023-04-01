@@ -102,6 +102,9 @@ router.post("/login", (req, res, next) => {
                     })
                 }
                 else{
+                    console.log(result); 
+                        // result consist boolean value i.e. true/false. If password matches it gives true else false.
+
                     // Password match case
                     if(result){
                         const token = jwt.sign({
@@ -122,6 +125,7 @@ router.post("/login", (req, res, next) => {
                                 data: {
                                     username: matchedUser.username,
                                     email: matchedUser.email,
+                                    userType: matchedUser.userType,
                                     token: token
                                 }
                             });
