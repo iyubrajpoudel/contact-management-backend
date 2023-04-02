@@ -9,12 +9,32 @@ const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv");
 dotenv.config();
 
-router.get("/", (req, res, next) => {
+/* router.get("/", (req, res, next) => {
     res.status(200).json({
         success: true,
         message: "User route hitted!"
     });
+}); */
+
+router.get('/', (req, res, next)=>{
+    User.find()
+    .then(result=>{
+        res.status(200).json({
+            success: true,
+            message: "All users fetched successdfully!",
+            data: result
+        })
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Error occured!",
+            error: err
+        })
+    })
 });
+
 
 router.get("/register", (req, res, next) => {
     res.status(200).json({
@@ -61,7 +81,6 @@ router.post("/register", (req, res, next) => {
         }
     })
 });
-
 
 router.post("/login", (req, res, next) => {
     const { username, password } = req.body;

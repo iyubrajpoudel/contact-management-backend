@@ -68,13 +68,63 @@ router.get("/:id", authenticate, (req, res, next)=>{
 })
 
 
+//converting cloudinary image URL into image name
+const cloudinaryImagePathToName = (path) => {
+    const temp = path.split('/');
+    const temp2 = temp[temp.length - 1].split('.');
+    const imageName = temp2[0];
+    return imageName;
+}
+
+
+// Contact.findById(id)
+// .then(result=>{
+//     console.log(data);
+// })
+// .catch(err=>{
+//     console.log(err);
+// })
 
 // Delete request
 router.delete("/:id", adminAuthenticate, (req, res, next)=>{
     // console.log(req.params.id);
     const {id} = req.params;
+    // Find a user by ID
+    // const data = Contact.findOne({_id: id});
+    // const data = Contact.findOne({_id: id});
+    // const data = Contact.findById(id);
+    // console.log(data);
+    
+    // for deleting image from cloudinary we need image name
+    let imageName = "";
+    Contact.findById(id)
+    .then(result=>{
+        console.log(result);
+        const imagePath = result.image;
+        // console.log(imagePath);
+        imageName = cloudinaryImagePathToName(imagePath);
+        // console.log(imageName)
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+
     Contact.deleteOne({_id: id})
     .then(result=>{
+        cloudinary.uploader.destroy(imageName, (error, result)=>{
+            // if (error){
+            //     console.log(error);
+                // res.status(500).json({
+                //     success: false,
+                //     message: "Error deleting image from cloudinary.",
+                //     error: error
+                // });
+            // }
+            // else{
+            //     console.log(result);
+            // }
+            error ? console.log(error) : console.log(result);
+        });
         res.status(200).json({
             success: true,
             message: "Data deleted successfully",
