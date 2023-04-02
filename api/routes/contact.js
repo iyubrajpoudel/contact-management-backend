@@ -85,7 +85,33 @@ const cloudinaryImagePathToName = (path) => {
 //     console.log(err);
 // })
 
-// Delete request
+//Delete request using query
+router.delete("/", adminAuthenticate, (req, res, next)=>{
+    const {id, image} = req.query;
+
+    let imageName = cloudinaryImagePathToName(image);
+
+    Contact.deleteOne({_id: id})
+    .then(result=>{
+        res.status(200).json({
+            success: true,
+            message: "Data deleted successfully",
+            result: result
+        });
+        cloudinary.uploader.destroy(imageName, (error, result)=>{
+            error ? console.log(error) : console.log(result);
+        });
+    })
+    .catch(err=>{
+        res.status(500).json({
+            success: false,
+            message: "Error occured!",
+            error: err
+        })
+    })
+})
+
+// Delete request using params
 router.delete("/:id", adminAuthenticate, (req, res, next)=>{
     // console.log(req.params.id);
     const {id} = req.params;
