@@ -22,31 +22,34 @@ const mongoose = require("mongoose");
 // mongoose.connect(mongodb+srv://random:<password>@random.rshnxb7.mongodb.net/?retryWrites=true&w=majority)
 
 //connecting mongodb atlas with our api
+const mongodbClusterUsername = process.env.MONGODB_ATLAS_CLUSTER_USERNAME;
 const mongodbClusterPassword = process.env.MONGODB_ATLAS_CLUSTER_PASSWORD;
-const mongodbConnectionString = `mongodb+srv://random:${mongodbClusterPassword}@random.rshnxb7.mongodb.net/?retryWrites=true&w=majority`;
+const mongodbClusterDB = `contact-management-db`;
+// const mongodbConnectionString = `mongodb+srv://random:${mongodbClusterPassword}@random.rshnxb7.mongodb.net/?retryWrites=true&w=majority`;
+const mongodbConnectionString = `mongodb+srv://${mongodbClusterUsername}:${mongodbClusterPassword}@random.rshnxb7.mongodb.net/${mongodbClusterDB}?retryWrites=true&w=majority`;
 mongoose.connect(mongodbConnectionString);
 
 //ensure successful connection
 
 // on connection error
-mongoose.connection.on("error",(err)=>{
+mongoose.connection.on("error", (err) => {
     console.log("Connection failed !");
     console.log("Error: ", err);
 })
 
 // on successful connection
-mongoose.connection.on("connected", (conn)=>{
+mongoose.connection.on("connected", (conn) => {
     console.log("Connected successfully!");
 })
 
 //using bodyParser
 // app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //using fileupload
 app.use(fileUpload({
-    useTempFiles : true,
+    useTempFiles: true,
     // tempFileDir : '/tmp/'
 }));
 
@@ -69,7 +72,7 @@ app.use("/user", userRoute);
 // });
 
 // Handle undefined url
-app.use((req, res, next)=>{
+app.use((req, res, next) => {
     res.status(404).json({
         "error": true,
         "message": "Page Not Found"

@@ -17,7 +17,7 @@ const contactSchema = new mongoose.Schema({
 })
 
 // Creating Model based on contactSchema defined above
-const contactModel = mongoose.model("Contact", contactSchema);
+const contactModel = mongoose.model("contact", contactSchema);
 
 // Exporting modle
 module.exports = contactModel;

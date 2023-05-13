@@ -12,31 +12,31 @@ dotenv.config();
 
 // Cloudinary Configuration 
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_USER_NAME,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret:  process.env.CLOUDINARY_API_SECRET
-  });
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 // setting the different requests for differnt routes
 
 // handeling GET request for contact/
-router.get('/', authenticate, (req, res, next)=>{
+router.get('/', authenticate, (req, res, next) => {
     Contact.find()
-    .then(result=>{
-        res.status(200).json({
-            success: true,
-            message: "Data fetched successdfully!",
-            data: result
+        .then(result => {
+            res.status(200).json({
+                success: true,
+                message: "Data fetched successdfully!",
+                data: result
+            })
         })
-    })
-    .catch(err=>{
-        console.log(err);
-        res.status(500).json({
-            success: false,
-            message: "Error occured!",
-            error: err
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                success: false,
+                message: "Error occured!",
+                error: err
+            })
         })
-    })
 });
 
 // handeling POST request for contact/
@@ -47,24 +47,24 @@ router.get('/', authenticate, (req, res, next)=>{
 //     });
 // });
 
-router.get("/:id", authenticate, (req, res, next)=>{
+router.get("/:id", authenticate, (req, res, next) => {
     // console.log(req.params.id);
-    const {id} = req.params;
+    const { id } = req.params;
     Contact.findById(id)
-    .then(result=>{
-        res.status(200).json({
-            status: true,
-            message: "Data fetched successfully",
-            data: result
-        });
-    })
-    .catch(err=>{
-        res.status(500).json({
-            success: false,
-            message: "Error occured!",
-            error: err
+        .then(result => {
+            res.status(200).json({
+                status: true,
+                message: "Data fetched successfully",
+                data: result
+            });
         })
-    })
+        .catch(err => {
+            res.status(500).json({
+                success: false,
+                message: "Error occured!",
+                error: err
+            })
+        })
 })
 
 
@@ -86,96 +86,96 @@ const cloudinaryImagePathToName = (path) => {
 // })
 
 //Delete request using query
-router.delete("/", adminAuthenticate, (req, res, next)=>{
-    const {id, image} = req.query;
+router.delete("/", adminAuthenticate, (req, res, next) => {
+    const { id, image } = req.query;
 
     let imageName = cloudinaryImagePathToName(image);
 
-    Contact.deleteOne({_id: id})
-    .then(result=>{
-        res.status(200).json({
-            success: true,
-            message: "Data deleted successfully",
-            result: result
-        });
-        cloudinary.uploader.destroy(imageName, (error, result)=>{
-            error ? console.log(error) : console.log(result);
-        });
-    })
-    .catch(err=>{
-        res.status(500).json({
-            success: false,
-            message: "Error occured!",
-            error: err
+    Contact.deleteOne({ _id: id })
+        .then(result => {
+            res.status(200).json({
+                success: true,
+                message: "Data deleted successfully",
+                result: result
+            });
+            cloudinary.uploader.destroy(imageName, (error, result) => {
+                error ? console.log(error) : console.log(result);
+            });
         })
-    })
+        .catch(err => {
+            res.status(500).json({
+                success: false,
+                message: "Error occured!",
+                error: err
+            })
+        })
 })
 
 // Delete request using params
-router.delete("/:id", adminAuthenticate, (req, res, next)=>{
+router.delete("/:id", adminAuthenticate, (req, res, next) => {
     // console.log(req.params.id);
-    const {id} = req.params;
+    const { id } = req.params;
     // Find a user by ID
     // const data = Contact.findOne({_id: id});
     // const data = Contact.findOne({_id: id});
     // const data = Contact.findById(id);
     // console.log(data);
-    
+
     // for deleting image from cloudinary we need image name
     let imageName = "";
     Contact.findById(id)
-    .then(result=>{
-        console.log(result);
-        const imagePath = result.image;
-        // console.log(imagePath);
-        imageName = cloudinaryImagePathToName(imagePath);
-        // console.log(imageName)
-    })
-    .catch(err=>{
-        console.log(err);
-    })
+        .then(result => {
+            console.log(result);
+            const imagePath = result.image;
+            // console.log(imagePath);
+            imageName = cloudinaryImagePathToName(imagePath);
+            // console.log(imageName)
+        })
+        .catch(err => {
+            console.log(err);
+        })
 
-    Contact.deleteOne({_id: id})
-    .then(result=>{
-        cloudinary.uploader.destroy(imageName, (error, result)=>{
-            // if (error){
-            //     console.log(error);
+    Contact.deleteOne({ _id: id })
+        .then(result => {
+            cloudinary.uploader.destroy(imageName, (error, result) => {
+                // if (error){
+                //     console.log(error);
                 // res.status(500).json({
                 //     success: false,
                 //     message: "Error deleting image from cloudinary.",
                 //     error: error
                 // });
-            // }
-            // else{
-            //     console.log(result);
-            // }
-            error ? console.log(error) : console.log(result);
-        });
-        res.status(200).json({
-            success: true,
-            message: "Data deleted successfully",
-            result: result
-        });
-    })
-    .catch(err=>{
-        res.status(500).json({
-            success: false,
-            message: "Error occured!",
-            error: err
+                // }
+                // else{
+                //     console.log(result);
+                // }
+                error ? console.log(error) : console.log(result);
+            });
+            res.status(200).json({
+                success: true,
+                message: "Data deleted successfully",
+                result: result
+            });
         })
-    });
+        .catch(err => {
+            res.status(500).json({
+                success: false,
+                message: "Error occured!",
+                error: err
+            })
+        });
 })
 
 
 // put request
-router.put("/:id", adminAuthenticate, (req, res, next)=>{
+router.put("/:id", adminAuthenticate, (req, res, next) => {
     // console.log(req.params.id);
-    const {id} = req.params;
-    const {name, email, phone} = req.body;
+    const { id } = req.params;
+    const { name, email, phone } = req.body;
     const image = req.files.image;
-    cloudinary.uploader.upload(image.tempFilePath, (err,result)=>{
-        if(err){
-            console.log("Error: " , err);
+    cloudinary.uploader.upload(image.tempFilePath, (err, result) => {
+        if (err) {
+            console.log("Error: ", err);
             res.status(500).json({
                 success: false,
                 message: "Cloudinary error!",
@@ -183,47 +183,49 @@ router.put("/:id", adminAuthenticate, (req, res, next)=>{
             })
             return;
         }
-        if(result){
+        if (result) {
             let imageURL = result.url;
-            Contact.findOneAndUpdate({_id: id},{$set:{
-                name: name,
-                email: email,
-                phone: phone,
-                image: imageURL
-            }})
-            .then(result=>{
-                res.status(200).json({
-                    success: true,
-                    message: "Data updated successfully",
-                    result: result
-                });
+            Contact.findOneAndUpdate({ _id: id }, {
+                $set: {
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    image: imageURL
+                }
             })
-            .catch(err=>{
-                console.log(err);
-                res.status(500).json({
-                    success: false,
-                    message: "Error occured!",
-                    error: err
-                });
-            })
+                .then(result => {
+                    res.status(200).json({
+                        success: true,
+                        message: "Data updated successfully",
+                        result: result
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({
+                        success: false,
+                        message: "Error occured!",
+                        error: err
+                    });
+                })
         }
     })
 })
 
 
-router.post('/test',(req, res, next)=>{
+router.post('/test', (req, res, next) => {
     const file = req.files.image;
-    const uploadToCloudinary = (file)=>{
-        cloudinary.uploader.upload(file.tempFilePath, (err,result)=>{
-            if(err){
-                console.log("Error: " , err);
+    const uploadToCloudinary = (file) => {
+        cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
+            if (err) {
+                console.log("Error: ", err);
                 res.status(500).json({
                     success: false,
                     message: "Error Occured",
                     error: err
                 })
             }
-            if(result){
+            if (result) {
                 console.log("Result: ", result);
                 console.log(result.url);
                 res.status(200).json({
@@ -238,7 +240,7 @@ router.post('/test',(req, res, next)=>{
 });
 
 
-router.post('/', adminAuthenticate, (req, res, next)=>{
+router.post('/', adminAuthenticate, (req, res, next) => {
     // console.log(req.body);
     // console.log(req.body.name);
 
@@ -259,34 +261,34 @@ router.post('/', adminAuthenticate, (req, res, next)=>{
     // res.writeHead(200, {'Content-Type': 'application\json'});
 
 
-/*     
-    const getCloudinaryPath = (file)=>{
-        let filePath = "345";
-        cloudinary.uploader.upload(file.tempFilePath, (err,result)=>{
-            if(err){
-                console.log("Error!" , Error);
-                console.log(filePath);
-                return filePath;
-            }
-            if(result){
-                console.log("Success!", result);
-                filePath = result.url;
-                console.log(filePath);
-                return filePath;
-            }
-        })
-    };
-
- */
+    /*     
+        const getCloudinaryPath = (file)=>{
+            let filePath = "345";
+            cloudinary.uploader.upload(file.tempFilePath, (err,result)=>{
+                if(err){
+                    console.log("Error!" , Error);
+                    console.log(filePath);
+                    return filePath;
+                }
+                if(result){
+                    console.log("Success!", result);
+                    filePath = result.url;
+                    console.log(filePath);
+                    return filePath;
+                }
+            })
+        };
+    
+     */
     // const image = req.files.image;
     // const imageURL = await getCloudinaryPath(req.files.image);
     // const imageURL = "xyz" || await getCloudinaryPath(req.files.image);
     // console.log(imageURL)
 
     const image = req.files.image;
-    cloudinary.uploader.upload(image.tempFilePath, (err,result)=>{
-        if(err){
-            console.log("Error!" , Error);
+    cloudinary.uploader.upload(image.tempFilePath, (err, result) => {
+        if (err) {
+            console.log("Error!", Error);
             res.status(500).json({
                 success: false,
                 message: "Cloudinary Error!",
@@ -294,7 +296,7 @@ router.post('/', adminAuthenticate, (req, res, next)=>{
             })
             return;
         }
-        if(result){
+        if (result) {
             const contact = new Contact({
                 name: req.body.name,
                 email: req.body.email,
@@ -302,29 +304,29 @@ router.post('/', adminAuthenticate, (req, res, next)=>{
                 image: result.url
             })
             contact.save()
-            .then(result => {
-                // console.log(result);
-                res.status(200).json({
-                    success: true,
-                    message: "Data added successfully!",
-                    data: result 
+                .then(result => {
+                    // console.log(result);
+                    res.status(200).json({
+                        success: true,
+                        message: "Data added successfully!",
+                        data: result
+                    })
                 })
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(500).json({
-                    success: false,
-                    message: "Server side error",
-                    error: err 
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({
+                        success: false,
+                        message: "Server side error",
+                        error: err
+                    })
                 })
-            })
             return;
         }
     })
 });
 
 // handeling GET request for contact/demo
-router.get('/demo',(req, res, next)=>{
+router.get('/demo', (req, res, next) => {
     res.status(200).json({
         "success": true,
         "message": "GET request on contact demo route."
