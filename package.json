@@ -1,7 +1,7 @@
 {
-  "name": "rest-api",
+  "name": "contact-management-backend",
   "version": "1.0.0",
-  "description": "NEM REST API",
+  "description": "contact-management-backend in NEM (Node, Express & MongoDB)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
