@@ -10,6 +10,10 @@ const bodyParser = require("body-parser");
 // Requiring express-fileupload
 const fileUpload = require("express-fileupload");
 
+// Requiring cors (to fix CORS error)
+const cors = require("cors");
+// use cors as middleware to fix CORS error
+app.use(cors());
 
 // Requiring dotenv
 const dotenv = require("dotenv");
