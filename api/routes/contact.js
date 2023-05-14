@@ -20,7 +20,9 @@ cloudinary.config({
 // setting the different requests for differnt routes
 
 // handeling GET request for contact/
-router.get('/', authenticate, (req, res, next) => {
+
+router.get('/', (req, res, next) => {
+    // router.get('/', authenticate, (req, res, next) => {
     Contact.find()
         .then(result => {
             res.status(200).json({
@@ -47,7 +49,8 @@ router.get('/', authenticate, (req, res, next) => {
 //     });
 // });
 
-router.get("/:id", authenticate, (req, res, next) => {
+// router.get("/:id", authenticate, (req, res, next) => {
+router.get("/:id", (req, res, next) => {
     // console.log(req.params.id);
     const { id } = req.params;
     Contact.findById(id)
@@ -86,7 +89,9 @@ const cloudinaryImagePathToName = (path) => {
 // })
 
 //Delete request using query
-router.delete("/", adminAuthenticate, (req, res, next) => {
+
+// router.delete("/", adminAuthenticate, (req, res, next) => {
+router.delete("/", (req, res, next) => {
     const { id, image } = req.query;
 
     let imageName = cloudinaryImagePathToName(image);
@@ -112,7 +117,10 @@ router.delete("/", adminAuthenticate, (req, res, next) => {
 })
 
 // Delete request using params
-router.delete("/:id", adminAuthenticate, (req, res, next) => {
+
+// router.delete("/:id", adminAuthenticate, (req, res, next) => {
+router.delete("/:id", (req, res, next) => {
+
     // console.log(req.params.id);
     const { id } = req.params;
     // Find a user by ID
@@ -168,7 +176,8 @@ router.delete("/:id", adminAuthenticate, (req, res, next) => {
 
 
 // put request
-router.put("/:id", adminAuthenticate, (req, res, next) => {
+// router.put("/:id", adminAuthenticate, (req, res, next) => {
+router.put("/:id", (req, res, next) => {
     // console.log(req.params.id);
     const { id } = req.params;
     const { name, email, phone } = req.body;
@@ -240,7 +249,8 @@ router.post('/test', (req, res, next) => {
 });
 
 
-router.post('/', adminAuthenticate, (req, res, next) => {
+// router.post('/', adminAuthenticate, (req, res, next) => {
+router.post('/', (req, res, next) => {
     // console.log(req.body);
     // console.log(req.body.name);
 
