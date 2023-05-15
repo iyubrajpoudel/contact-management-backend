@@ -76,13 +76,24 @@ app.use("/user", userRoute);
 // });
 
 // Handle undefined url
-app.use((req, res, next) => {
+
+app.use("*", (req, res, next) => {
     res.status(404).json({
         "error": true,
         "message": "Page Not Found"
     })
 });
 
+// or 
+
+/* 
+app.use((req, res, next) => {
+    res.status(404).json({
+        "error": true,
+        "message": "Page Not Found"
+    })
+});
+*/
 
 // Exporting app
 module.exports = app;
