@@ -64,7 +64,8 @@ router.get("/:id", (req, res, next) => {
         .catch(err => {
             res.status(500).json({
                 success: false,
-                message: "Error occured!",
+                // message: "Error occured!",
+                message: "404 Not Found",
                 error: err
             })
         })
@@ -182,6 +183,7 @@ router.put("/:id", (req, res, next) => {
     const { id } = req.params;
     const { name, email, phone } = req.body;
     const image = req.files.image;
+    // if (image){
     cloudinary.uploader.upload(image.tempFilePath, (err, result) => {
         if (err) {
             console.log("Error: ", err);
@@ -219,8 +221,82 @@ router.put("/:id", (req, res, next) => {
                 })
         }
     })
+    // }
+    // else{
+    //     console.log("oooo");
+    //     res.status(404).json({
+    //         success: false,
+    //         message: "No image found. Select a image first."
+    //     })
+    // }
 })
 
+router.patch("/:id", (req, res, next) => {
+    const { id } = req.params;
+    const { name, email, phone } = req.body;
+
+    Contact.findOneAndUpdate({ _id: id }, {
+        $set: {
+            name: name,
+            email: email,
+            phone: phone
+        }
+    })
+    .then(result => {
+        if (!result) {
+            // Handle case when contact with the given ID is not found
+            return res.status(404).json({
+                success: false,
+                message: "Contact not found"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Data updated successfully",
+            result: result
+        });
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Error occurred!",
+            error: err
+        });
+    });
+});
+
+
+/* router.patch("/:id", (req, res, next) => {
+    // console.log(req.params.id);
+    const { id } = req.params;
+    const { name, email, phone } = req.body;
+
+    Contact.findOneAndUpdate({ _id: id }, {
+        $set: {
+            name: name,
+            email: email,
+            phone: phone
+        }
+    })
+    .then(result => {
+        res.status(200).json({
+            success: true,
+            message: "Data updated successfully",
+            result: result
+        });
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Error occured!",
+            error: err
+        });
+    })
+})
+ */
 
 router.post('/test', (req, res, next) => {
     const file = req.files.image;
