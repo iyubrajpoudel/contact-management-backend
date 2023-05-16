@@ -9,7 +9,7 @@ const server = http.createServer(app);
 
 // Listening to server (port)
 
-const PORT = 4444;
+const PORT = process.env.PORT || 4444;
 
 // server.listen(PORT_NO, CALLBACK_FUNCTION)
 server.listen(PORT, () => {
