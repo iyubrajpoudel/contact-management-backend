@@ -49,8 +49,8 @@ router.get('/', (req, res, next) => {
 //     });
 // });
 
-// router.get("/:id", authenticate, (req, res, next) => {
-router.get("/:id", (req, res, next) => {
+// router.get("/:id", (req, res, next) => {
+router.get("/:id", authenticate, (req, res, next) => {
     // console.log(req.params.id);
     const { id } = req.params;
     Contact.findById(id)
