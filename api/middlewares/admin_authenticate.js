@@ -15,14 +15,15 @@ const authenticate = (req, res, next)=>{
         else{
             return res.status(500).json({
                 success: false,
-                message: "Need admin pervilage."
+                message: "Unauthorized! Need admin privilege."
             })
         }
     }
     catch(err){
         return res.status(500).json({
             success: false,
-            message: "Invalid token!",
+            // message: "Invalid token!",
+            message: "Unauthorized! Need admin privilege.",
             error: err
         })
     }

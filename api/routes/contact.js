@@ -91,8 +91,8 @@ const cloudinaryImagePathToName = (path) => {
 
 //Delete request using query
 
-// router.delete("/", adminAuthenticate, (req, res, next) => {
-router.delete("/", (req, res, next) => {
+router.delete("/", adminAuthenticate, (req, res, next) => {
+// router.delete("/", (req, res, next) => {
     const { id, image } = req.query;
 
     let imageName = cloudinaryImagePathToName(image);
@@ -119,8 +119,8 @@ router.delete("/", (req, res, next) => {
 
 // Delete request using params
 
-// router.delete("/:id", adminAuthenticate, (req, res, next) => {
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", adminAuthenticate, (req, res, next) => {
+// router.delete("/:id", (req, res, next) => {
 
     // console.log(req.params.id);
     const { id } = req.params;
@@ -177,8 +177,8 @@ router.delete("/:id", (req, res, next) => {
 
 
 // put request
-// router.put("/:id", adminAuthenticate, (req, res, next) => {
-router.put("/:id", (req, res, next) => {
+router.put("/:id", adminAuthenticate, (req, res, next) => {
+// router.put("/:id", (req, res, next) => {
     // console.log(req.params.id);
     const { id } = req.params;
     const { name, email, phone } = req.body;
@@ -231,7 +231,8 @@ router.put("/:id", (req, res, next) => {
     // }
 })
 
-router.patch("/:id", (req, res, next) => {
+// router.patch("/:id", (req, res, next) => {
+router.patch("/:id", adminAuthenticate, (req, res, next) => {
     const { id } = req.params;
     const { name, email, phone } = req.body;
 
@@ -326,7 +327,7 @@ router.post('/test', (req, res, next) => {
 
 
 // router.post('/', adminAuthenticate, (req, res, next) => {
-router.post('/', (req, res, next) => {
+router.post('/', authenticate, (req, res, next) => {
     // console.log(req.body);
     // console.log(req.body.name);
 

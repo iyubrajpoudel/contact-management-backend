@@ -14,7 +14,8 @@ const authenticate = (req, res, next)=>{
     catch(err){
         return res.status(500).json({
             success: false,
-            message: "Invalid token!",
+            // message: "Invalid token!",
+            message: "Unauthorized. You must be logged in",
             error: err
         })
     }
