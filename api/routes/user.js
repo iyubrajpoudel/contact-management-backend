@@ -43,8 +43,76 @@ router.get("/register", (req, res, next) => {
     });
 });
 
-router.post("/register", (req, res, next) => {
+router.post("/register", async(req, res, next) => {
     const { name, username, email, password, userType } = req.body;
+
+    // Fields Regex validations {
+
+        // Regular expression for full name validation
+        const fullNameRegex = /^[a-zA-Z\s]+$/;
+    
+        // Regular expression for email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+        // Regular expression for username validation
+        const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+    
+        if (!fullNameRegex.test(name)){
+            return res.status(500).json({
+                success: false,
+                message: "Enter a valid name!"
+            })
+        }
+        if (!emailRegex.test(email)){
+            return res.status(500).json({
+                success: false,
+                message: "Enter a valid email address!"
+            })
+        }
+        if (!usernameRegex.test(username)){
+            return res.status(500).json({
+                success: false,
+                message: "Enter a valid username!"
+            })
+        }
+
+    // } 
+
+    // checking exixting username or email {
+    
+        let isEmailRegistered = await User.findOne({email});
+        if (isEmailRegistered){
+            return res.status(500).json({
+                success: false,
+                message: "Email is already registered! You can login"
+            })
+        }
+    
+        let isUsernameTaken = await User.findOne({username});
+        if (isUsernameTaken){
+            return res.status(500).json({
+                success: false,
+                message: "Username is already taken! Kindly try another username.",
+            })
+        }
+    
+    // } checking exixting username or email
+
+    // checking strong password {
+
+    // Regular expression for strong password validation
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-=_+{}[\]|;:'",.<>/?]).{10,}$/;
+    /* regex for password of 10 or more characters, at least one uppercase & lowercase characters, at least one number, and at least one symbol */
+    
+    if (!strongPasswordRegex.test(password)){
+        return res.status(500).json({
+            success: false,
+            message: "Kindly use a strong password (criterian : 10+ characters, one or more uppercase, lowercase, number and symbols.)"
+        })
+    }
+    
+    // } checking strong password
+
     const saltRounds = 10;
     bcrypt.hash(password, saltRounds, (err, hash) => {
         if (err) {
